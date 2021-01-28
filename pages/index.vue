@@ -22,14 +22,46 @@
           GitHub
         </a>
       </div>
+      <div class="counter">
+        <button class="decrement" @click="decrement">-</button>
+        <button class="increment" @click="increment">+</button>
+        <div>{{ value }}</div>
+        <button class="update" @click="update">Update</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { useRootStore } from '~/utils/rootStore';
+import RootStore from '~/store/modules';
 
-export default Vue.extend({});
+export default Vue.extend({
+  computed: {
+    rootStore(): RootStore {
+      return useRootStore(this.$store);
+    },
+
+    value(): number {
+      return this.rootStore.counter.value;
+    },
+  },
+
+  methods: {
+    decrement(): void {
+      this.rootStore.counter.decrement();
+    },
+
+    increment(): void {
+      this.rootStore.counter.increment();
+    },
+
+    update(): void {
+      this.rootStore.counter.incrementValueRandomlyAndAsync();
+    },
+  },
+});
 </script>
 
 <style lang="scss">
@@ -43,10 +75,10 @@ export default Vue.extend({});
   align-items: center;
   text-align: center;
 
-
   .title {
-    font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Quicksand', 'Source Sans Pro', -apple-system,
+      BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+      sans-serif;
     display: block;
     font-weight: 300;
     font-size: 100px;
@@ -64,6 +96,42 @@ export default Vue.extend({});
 
   .links {
     padding-top: 15px;
+  }
+
+  .counter {
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div {
+      width: 90px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    button {
+      margin: 1rem;
+      width: 90px;
+      height: 60px;
+      border: 1px solid grey;
+      border-radius: 25%;
+      cursor: pointer;
+
+      &.decrement {
+        background: #e55528;
+      }
+      &.increment {
+        background: #39dbb5;
+      }
+      &.update {
+        background: #72a0f3;
+      }
+    }
   }
 }
 </style>
