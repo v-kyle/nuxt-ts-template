@@ -18,6 +18,6 @@ export default class Counter {
     const newValue = Math.floor(Math.random() * 10);
     setTimeout(() => {
       this.increment(newValue);
-    }, 1000);
+    }, 1234);
   }
 }

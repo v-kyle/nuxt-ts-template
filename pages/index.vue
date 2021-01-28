@@ -3,10 +3,10 @@
     <div>
       <Logo />
       <h1 class="title">nuxt-ts-template</h1>
-      <h2 class="subtitle">with scss support</h2>
+      <h2 class="subtitle">with scss, typed store and axios support</h2>
       <div class="links">
         <a
-          href="https://nuxtjs.org/"
+          href="https://typescript.nuxtjs.org"
           target="_blank"
           rel="noopener noreferrer"
           class="button--green"
@@ -14,7 +14,7 @@
           Documentation
         </a>
         <a
-          href="https://github.com/nuxt/nuxt.js"
+          href="https://github.com/v-kyle"
           target="_blank"
           rel="noopener noreferrer"
           class="button--grey"
@@ -28,6 +28,9 @@
         <div>{{ value }}</div>
         <button class="update" @click="update">Update</button>
       </div>
+      <div>
+        <span>{{ mathFact }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -36,8 +39,15 @@
 import Vue from 'vue';
 import { useRootStore } from '~/utils/rootStore';
 import RootStore from '~/store/modules';
+import { getRandomMathFact } from '~/api/radom';
 
 export default Vue.extend({
+  data() {
+    return {
+      mathFact: 'Click on plus!',
+    };
+  },
+
   computed: {
     rootStore(): RootStore {
       return useRootStore(this.$store);
@@ -45,6 +55,16 @@ export default Vue.extend({
 
     value(): number {
       return this.rootStore.counter.value;
+    },
+  },
+
+  watch: {
+    async value(v: number) {
+      if (v >= 0) {
+        await this.updateMathFact();
+      } else {
+        this.mathFact = 'Click on plus!';
+      }
     },
   },
 
@@ -59,6 +79,10 @@ export default Vue.extend({
 
     update(): void {
       this.rootStore.counter.incrementValueRandomlyAndAsync();
+    },
+
+    async updateMathFact(): Promise<void> {
+      this.mathFact = await getRandomMathFact(this.value);
     },
   },
 });
@@ -111,7 +135,7 @@ export default Vue.extend({
       justify-content: center;
       align-items: center;
       font-weight: bold;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
     }
 
     button {
@@ -121,6 +145,10 @@ export default Vue.extend({
       border: 1px solid grey;
       border-radius: 25%;
       cursor: pointer;
+      font-size: 1.25rem;
+      font-weight: bolder;
+      outline: none;
+      opacity: 0.8;
 
       &.decrement {
         background: #e55528;
@@ -130,6 +158,15 @@ export default Vue.extend({
       }
       &.update {
         background: #72a0f3;
+      }
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &:active {
+        opacity: 1;
+        transform: translateY(1px);
       }
     }
   }
