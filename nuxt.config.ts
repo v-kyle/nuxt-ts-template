@@ -1,4 +1,5 @@
 import { NuxtConfig } from '@nuxt/types';
+import i18n from './config/i18n';
 
 const config: NuxtConfig = {
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -33,6 +34,24 @@ const config: NuxtConfig = {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    [
+      'nuxt-i18n',
+      {
+        strategy: 'no_prefix',
+        defaultLocale: 'en',
+        locales: [
+          {
+            code: 'en',
+            name: 'English',
+          },
+          {
+            code: 'ru',
+            name: 'Russian',
+          },
+        ],
+        vueI18n: i18n,
+      },
+    ],
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)

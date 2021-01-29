@@ -17,6 +17,12 @@ html {
   box-sizing: border-box;
 }
 
+@media (max-width: 720px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 *,
 *::before,
 *::after {

@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div>
+    <LangInput />
+    <div style="max-width: 90vw">
       <Logo />
       <h1 class="title">nuxt-ts-template</h1>
       <h2 class="subtitle">with scss, typed store and axios support</h2>
@@ -11,7 +12,7 @@
           rel="noopener noreferrer"
           class="button--green"
         >
-          Documentation
+          {{ $t('docs') }}
         </a>
         <a
           href="https://github.com/v-kyle"
@@ -29,7 +30,7 @@
         <button class="update" @click="update">Update</button>
       </div>
       <div>
-        <span>{{ mathFact }}</span>
+        {{ mathFact || $t('click_on') }}
       </div>
     </div>
   </div>
@@ -40,11 +41,14 @@ import Vue from 'vue';
 import { useRootStore } from '~/utils/rootStore';
 import RootStore from '~/store/modules';
 import { getRandomMathFact } from '~/api/radom';
+import LangInput from '~/components/LangInput.vue';
 
 export default Vue.extend({
+  components: { LangInput },
+
   data() {
     return {
-      mathFact: 'Click on plus!',
+      mathFact: '',
     };
   },
 
@@ -56,6 +60,10 @@ export default Vue.extend({
     value(): number {
       return this.rootStore.counter.value;
     },
+
+    tt(): unknown {
+      return this.$t('click_on');
+    },
   },
 
   watch: {
@@ -63,7 +71,7 @@ export default Vue.extend({
       if (v >= 0) {
         await this.updateMathFact();
       } else {
-        this.mathFact = 'Click on plus!';
+        this.mathFact = '';
       }
     },
   },
@@ -118,6 +126,24 @@ export default Vue.extend({
     padding-bottom: 15px;
   }
 
+  @media (max-width: 720px) {
+    .title {
+      font-size: 48px;
+    }
+    .subtitle {
+      font-size: 24px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .title {
+      font-size: 24px;
+    }
+    .subtitle {
+      font-size: 12px;
+    }
+  }
+
   .links {
     padding-top: 15px;
   }
@@ -167,6 +193,14 @@ export default Vue.extend({
       &:active {
         opacity: 1;
         transform: translateY(1px);
+      }
+    }
+
+    @media (max-width: 720px) {
+      button {
+        width: 60px;
+        height: 30px;
+        font-size: 0.7rem;
       }
     }
   }
